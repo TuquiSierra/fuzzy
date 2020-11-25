@@ -7,19 +7,19 @@ class Rule:
         self.consequent=consequent
         
 
-    def __apply__(self, expression, values):
+    def __fuzzify__(self, expression, values):
         if isinstance(expression, UnaryExpression):
             try:
                 return expression.fuzzify(values[expression.variable.name])
             except KeyError:
                 pass
         elif isinstance(expression, AndExpression):
-            return min(self.__apply__(expression.left, values), self.__apply__(expression.right, values))
+            return min(self.__fuzzify__(expression.left, values), self.__fuzzify__(expression.right, values))
         elif isinstance(expression, OrExpression):
-            return max(self.__apply__(expression.left, values), self.__apply__(expression.right, values))
+            return max(self.__fuzzify__(expression.left, values), self.__fuzzify__(expression.right, values))
         
     def apply(self, values):
-        return self.__apply__(self.precedent, values)
+        return self.__fuzzify__(self.precedent, values)
     
     
 class RuleSet:
