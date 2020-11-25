@@ -1,28 +1,28 @@
 from variable import *
-from membership import TriangularMembership as TriangleM, TrapezoidalMembership as TrapezoidM
+from membership import TriangularMembership as TriangleM, TrapezoidalMembership as TrapezoidM, SigmoidalMembership as Sigmoid
 from expression import AtomicExpression as Statement, AndExpression, OrExpression
-from fuzzySet import FuzzySet, Term
+from fuzzySet import FuzzySet
 from rule import *
 
-
-forever=Term('forever', TrapezoidM(2,8,10,10))
-normal=Term('normal', TrapezoidM(0, 4, 5, 10))
-short=Term('short', TrapezoidM(0, 0, 3, 6))
+forever=Adjective('forever', TrapezoidM(0,0,2,4))
+normal=Adjective('normal', TrapezoidM(3, 5, 7, 8))
+short=Adjective('short', TrapezoidM(7, 8, 10, 10))
 duration=LinguisticVariable('duration', [forever, normal, short])
 
-easy=Term('easy', TrapezoidM(0, 0, 3, 5))
-medium=Term('medium',TrapezoidM(4,6,7,9))
-hard=Term('hard', TrapezoidM(7, 8, 10, 10))
+
+easy=Adjective('easy', TrapezoidM(0, 0, 3, 5))
+medium=Adjective('medium',TrapezoidM(4,6,7,9))
+hard=Adjective('hard', TrapezoidM(7, 8, 10, 10))
 difficulty=LinguisticVariable('difficulty', [easy, medium, hard])
 
-reactive=Term('reactive', TriangleM(0, 0, 4))
-fifty_fifty=Term('fifty fifty', TriangleM(1,5, 9))
-random=Term('random', TriangleM(6, 10, 10))
+reactive=Adjective('reactive', TriangleM(0, 0, 4))
+fifty_fifty=Adjective('fifty fifty', TriangleM(1,5, 9))
+random=Adjective('random', TriangleM(6, 10, 10))
 randomness=LinguisticVariable('randomness', [reactive,fifty_fifty, random])
 
-boring=Term('boring', TriangleM(0, 0, 4))
-meh=Term('fifty fifty', TriangleM(1,5, 9))
-fun=Term('fun', TriangleM(6, 10, 10))
+boring=Adjective('boring', TrapezoidM(0, 0,3, 4))
+meh=Adjective('fifty fifty', TrapezoidM(3,4, 7, 8))
+fun=Adjective('fun', TrapezoidM(7, 8, 10, 10))
 classification=LinguisticVariable('classification', [boring,meh, fun])
 
 difficult_game=Statement(difficulty, hard)
@@ -41,18 +41,9 @@ boring_game=Statement(classification, boring)
 meh_game=Statement(classification, meh)
 fun_game=Statement(classification, fun)
 
-first_rule=Rule(long_game.And(difficult_game), boring_game)
-second_rule=Rule(easy_game.Or(random_game).Or(short_game), meh_game)
-third_rule=Rule(medium_game.And(like_dice).And(normal_game), fun_game)
+first_rule=Rule(long_game.Or(easy_game), boring_game)
+second_rule=Rule(normal_game, meh_game)
+third_rule=Rule(short_game.Or(difficult_game), fun_game)
 
 rule_set=RuleSet([first_rule, second_rule, third_rule])
-
-methods=[ 'bisection']
-results=[]
-for m in methods:
-    results.append(rule_set({'duration':5, 'difficulty':8, 'randomness':2}, d_method=m))
-
-rule_set.plot(results)
-
-
 

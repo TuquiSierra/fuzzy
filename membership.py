@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import math
 
 class Membership:
     def __init__(self, func, domain):
@@ -13,11 +14,13 @@ class Membership:
     def plot(self, points=[]):
         plt.plot([x for x in self.domain],[self.func(x) for x in self.domain])
         plt.ylabel('Membership')
-        plt.ylim(0, 1)
-        
-        for p in points:
-            plt.plot(p, self.func(p), 'ro')
+        plt.ylim(-0.05, 1.05)
+        colors=['r', 'b', 'c', 'm', 'y', 'g']
+        for i,p in enumerate(points):
+            plt.plot(p[0], self.func(p[0]), colors[i]+'o', label=p[1])
+        plt.legend()
         plt.show()
+        
         
     def compose(self, other):
         def composite(x):
@@ -49,10 +52,6 @@ class TriangularMembership(Membership):
             domain=[i for i in np.linspace(start, end, 200)]
         super().__init__(triangle, domain)
         
-
-        
-        
-        
 class TrapezoidalMembership(Membership):
     def __init__(self, start, first_peak, second_peak, end, domain=None):
         def trapezoid(x):
@@ -66,3 +65,17 @@ class TrapezoidalMembership(Membership):
         if not domain:
             domain=[i for i in np.linspace(start, end, 200)]
         super().__init__(trapezoid,  domain)
+        
+class SigmoidalMembership(Membership):
+    def __init__(self, growth=1, domain=None):
+        if not domain:
+            domain=[i for i in np.linspace(0, 10, 200)]
+        def sigmoid(x):
+            return 1/(math.e**(-(x*growth-domain[len(domain)//2]))+1)
+        
+        super().__init__(sigmoid, domain)
+        
+
+        
+        
+        

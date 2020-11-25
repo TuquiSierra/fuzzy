@@ -28,7 +28,7 @@ class FuzzySet:
             
                 
     def __centroid__(self):
-        return sum([x*self.set(x) for x in self.set.domain])/sum(self.set(x) for x in self.set.domain)
+        return sum([x*self.set(x) for x in self.set.domain])/sum([self.set(x) for x in self.set.domain])
     
     def __sums__(self):
          return (sum([x for x in self.set.domain])*sum([self.set(x) for x in self.set.domain]))/sum([sum([self.set(x) for x in self.set.domain]) for x in self.set.domain])
@@ -76,17 +76,9 @@ class FuzzySet:
                 max_x+=x
                 count+=1
         return max_x/count
-        
-             
-        
-        
-    def plot(self, x=None):
+               
+    def plot(self, x=[]):
         return self.set.plot(x)
-    
-class Term:
-    def __init__(self, name, membership):
-        self.name=name
-        self.membership=membership
 
 
         
