@@ -127,13 +127,13 @@ Para aplicar el sistema al problema particular de clasificación de juegos, debe
         high = Adjective('high', Triangle(6, 10, 10))
         dur=LinguisticVariable('duration', [low, medium, high])
 
-    y así con el resto de las variables. Nuestra variable salida, será cuán entretenido es un juego:
+    y así con el resto de las variables. Nuestra variable salida será cuán entretenido es un juego:
 
         boring = Adjective('boring', Triangle(0, 0, 5))
         meh = Adjective('meh', Triangle(3, 5, 7))
         fun = Adjective('fun', Triangle(6, 10, 10)) 
 
-- Luego, para auxiliarnos en la construicción de las reglas  podemos definir todas las sentencias posibles de la siguiente forma: 
+- Luego, para auxiliarnos en la construcción de las reglas, podemos definir todas las sentencias posibles de la siguiente forma: 
  
         short_game = Statement(duration, low_duration)
 
@@ -141,11 +141,11 @@ Para aplicar el sistema al problema particular de clasificación de juegos, debe
 
         rule = Rule(short_game.Or(easy_game), boring_game)
 
-- Luego, utilizando todas las reglas, cosntruir un conjunto de reglas de la forma:
+- Luego, utilizando todas las reglas, construir un conjunto de reglas de la forma:
 
         rule_set= RuleSet([first_rule, second_rule, third_rule,...])
 
-- Para aplicar el sistema de inferencia, basta entonces llamar el conjunto con un diccionario que contenga como llave el símbolo del adejtivo que se cuantificó, el método de desdifusificación que se desea utilizar (centroide por defecto) y el método de agregación que se desea utilizar (*Mamdani* o *Larsen*, *Mamdani* por defecto):
+- Para aplicar el sistema de inferencia, basta entonces llamar el conjunto con un diccionario que contenga como llave el símbolo del adjetivo que se cuantificó, el método de desdifusificación que se desea utilizar (centroide por defecto) y el método de agregación que se desea utilizar (*Mamdani* o *Larsen*, *Mamdani* por defecto):
 
         result = rule_set({'duration':5, 'difficulty':2, 'randomness':5}, a_method = 'Mamdani', d_method = 'centroid')
 
